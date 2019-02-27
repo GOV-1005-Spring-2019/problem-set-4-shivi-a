@@ -1,0 +1,67 @@
+---
+title: "Problem Set #4"
+author: "Shivani Aggarwal"
+date: "February 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load needed dependencies
+
+library(tidyverse)
+library(devtools)
+library(gt)
+library(forcats)
+
+```
+
+
+```{r data, echo=FALSE}
+
+
+```
+
+## Question 1
+
+```{r question, echo=FALSE}
+
+
+```
+
+There were `r ` respondents who supported the Democratic candidate.
+
+There were `r ` more respondents who favored the Republican candidate than who were Undecided.
+
+There are two gender variables (gender and gender_combined). There are `r ` individuals for whom these variables have different values.
+
+There are `r ` respondents listed as “White” under race_eth who are not listed as “White” under file_race_black.
+
+The first response of Dem came `r ` minutes (rounded to the nearest minute) before the first response of Rep.
+
+## Question 2
+
+```{r table, echo=FALSE, results="asis"}
+
+
+
+```
+
+## Question 3
+
+```{r violin, echo=FALSE}
+
+
+  
+
+```
+
+## Question 4
+
+```{r visual, echo=FALSE}
+
+
+```
+
+
