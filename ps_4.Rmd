@@ -170,8 +170,39 @@ orig %>%
 
 ```{r violin, echo=FALSE}
 
+# Must involve the educ variable and not the educ4 variable because using glimpse or group_by and then count() reveals that educ has the category of Grade School, seen on the final chart, while educ4 does not. 
 
+orig %>% 
   
+  # Limit data to relevant variables
+  select(educ, final_weight) %>% 
+  
+  # Remove not-plotted, invalid data
+  filter(!educ == "[DO NOT READ] Refused") %>%
+  
+  # Create violin plot. Based on how violin plots are calculated / drawn, initially, the categorical variable should always be specified for the x axis, and the numerical variable for the y-axis. 
+  # Fct_relevel allows specific re-ordering of the categories, more than simply alphabetizing them
+  
+  ggplot(aes(x = fct_relevel(educ, "Grade school", "High school", "Some college or trade school", "Bachelors' degree", "Graduate or Professional Degree"), y = final_weight)) + 
+  
+  geom_violin() + 
+  
+  # Add points to the violin plot, using jitter so that they will be distributed within each violin. Width of .15 to approximate the amount of jitter observed in the given chart
+  # Alpha value ensures that the points are somewhat translucent as seen in the given chart
+  
+  geom_jitter(alpha = 0.4, size = 1, width = .15) + 
+  
+  # For geom_violin(), x needed to be educ and y needed to be final weight -- our final chart has this flipped, so now use this function to flip the axes
+  
+  coord_flip() +
+  
+  # Add appropriate labels
+  
+  labs(title = "More Educated Matter Less in North Carolina 9th", subtitle = "Poll gives more weight to people who are less likely to participate in polls", caption = "Source: New York Times Upshot / Siena College 2018 live polls") +
+  
+  # ylab here corresponds to what was originally defined as the yaxis, which is why it is for poll weights and xlab is null - it will get flipped in the display
+  
+  ylab("Weight Given to Respondent in Calculating Poll Results") + xlab(NULL)
 
 ```
 
