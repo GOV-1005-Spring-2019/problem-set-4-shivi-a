@@ -128,17 +128,17 @@ orig %>%
       title = "2018 Polling Results - North Carolina’s 9th Congressional 
       District") %>% 
   
-  # Style certain cells to have a red background
+  # Style certain cells to have a red background when Rep > Dem
       tab_style(style=cells_styles(
         bkgd_color = "crimson", 
         text_color = "white"), 
-        locations = cells_data(columns = vars(Rep), rows = Rep > 0.31)) %>%
+        locations = cells_data(columns = vars(Rep), rows = Rep > Dem)) %>%
   
-  # Style certain cells to have a blue background
+  # Style certain cells to have a blue background when Dem > Rep
   tab_style(style=cells_styles(
     bkgd_color = "blue", 
     text_color = "white"), 
-    locations = cells_data(columns = vars(Dem), rows = Dem > 0.46)) %>%
+    locations = cells_data(columns = vars(Dem), rows = Dem > Rep)) %>%
   
   # Set order of columns and their corresponding labels
     cols_label(
@@ -251,8 +251,8 @@ orig %>%
   # Ensuring the graph is informative, and has title, subtitle, and axes labels
   
   labs(title = "North Carolina 9th - Voting Days Vote Distribution 2018", 
-       subtitle = "The largest percent of Democrats voted on 10/27, while Republican turnout had a more even 
-distribution, except the last day", 
+       subtitle = "The largest percent of Democrat votes was cast on 10/27, while Republican votes had a more
+even distribution, except the last day", 
        caption = "Source: New York Times Upshot / Siena College 2018 live polls", 
        x = "Date", y = "Percent") +
   
