@@ -38,18 +38,45 @@ orig <- read_csv(file = "ps_4_elections-poll-nc09-3.csv",
 
 ```{r question, echo=FALSE}
 
+# Find respondents who supported the Democrats
+dem_sup <- orig %>% 
+  filter(response ==  "Dem") %>% 
+  nrow()
+
+# Find breakdown of respondents for Rep and Und so difference can be calculated
+rep_und <- orig %>% 
+  filter(response %in% c("Rep", "Und")) %>% 
+  group_by(response) %>% 
+  count()
+
+# Find rows where gender and gender_combined do not match
+gender_diff <- orig %>% 
+  filter(!gender == gender_combined) %>% 
+  nrow()
+
+# Find rows where race_eth is White and file_race_black is not
+white <- orig %>% 
+  filter(race_eth == "White", !file_race_black == "White") %>% 
+  count()
+
+# Sort data in order of increasing timestamp so that the difference between the first Dem timestamp and the first Rep timestamp can be calculated
+time <- orig %>% 
+  select(timestamp, response) %>% 
+  arrange(timestamp)
+
+# Data is of type timestamp, so the difference initially includes "minutes" -- it must be converted to numeric input so it can be rounded properly with round()
 
 ```
 
-There were `r ` respondents who supported the Democratic candidate.
+There were `r dem_sup` respondents who supported the Democratic candidate.
 
-There were `r ` more respondents who favored the Republican candidate than who were Undecided.
+There were `r rep_und[1, 2] - rep_und[2, 2]` more respondents who favored the Republican candidate than who were Undecided.
 
-There are two gender variables (gender and gender_combined). There are `r ` individuals for whom these variables have different values.
+There are two gender variables (gender and gender_combined). There are `r gender_diff` individuals for whom these variables have different values.
 
-There are `r ` respondents listed as “White” under race_eth who are not listed as “White” under file_race_black.
+There are `r white` respondents listed as “White” under race_eth who are not listed as “White” under file_race_black.
 
-The first response of Dem came `r ` minutes (rounded to the nearest minute) before the first response of Rep.
+The first response of Dem came `r round(as.numeric(time[5,1] - time[1,1]))` minutes (rounded to the nearest minute) before the first response of Rep.
 
 ## Question 2
 
