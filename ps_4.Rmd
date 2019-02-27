@@ -115,7 +115,7 @@ orig %>%
   # Calculate percentages using each row total
   mutate(Dem = Dem / all, Rep = Rep / all, Und = Und / all) %>% 
   
-  # Deselect the row total column and the 3rd party voter percentages as this data is not displayed in the final chart
+  # Deselect the row total column and the 3rd party response percentages as this data is not displayed in the final chart
   select(-all, -`3`) %>% 
   
   # Remove the implicit grouping from the earlier command so that the data is ready for being piped into a gt table  
@@ -211,11 +211,11 @@ orig %>%
 
 ```{r visual, echo=FALSE}
 
-# For my visualization, I was interested to look at the distribution of votes (broken down by response) over the different timestamps. 
+# For my visualization, I was interested to look at the distribution of poll responses (broken down by response) over the different timestamps. 
 
-# I noticed that the date range for the timestamps spanned 10-26 to 10-31. Even if I was to look at all the data together, I wouldn't neccessarily expect to see an even distribution of 1/6 of the voters coming in on each day - the result of various factors that make some days more convenient than others. 
+# I noticed that the date range for the timestamps spanned 10-26 to 10-31. Even if I was to look at all the data together, I wouldn't neccessarily expect to see an even distribution of 1/6 of the polled people coming on each day - the result of various factors that make some days more convenient than others. 
 
-# I wondered what the patterns might be for each response group - e.g. did the Third Party voters tend to all vote right at the end? Did Republican voters tend to vote earlier in the voting window, or later?
+# I wondered what the patterns might be for each response group - e.g. did the Third Party responses tend to all come in right at the end? Did Republican responses tend to come earlier in the poll window, or later?
 
 orig %>% 
   
@@ -229,7 +229,7 @@ orig %>%
   group_by(response, timestamp) %>% 
   summarize(total = n()) %>% 
   
-  # Calculate what proportion of the total in a response group voted on a given day, and then convert this to a percentage
+  # Calculate what proportion of the total in a response group responded on a given day, and then convert this to a percentage
   mutate(freq = total / sum(total), pct = round((freq*100), 0)) %>%
   
   # Plot the data, showing the percent voting each day, with each day broken down into the response categories for a side-by-side comparison more helpful than facet wrap
@@ -239,7 +239,7 @@ orig %>%
   ggplot(aes(x = timestamp, y = pct, 
              fill = fct_relevel(response, "Rep", "Dem", "Und", "3"))) +
   
-  # Create bar chart; the position_dodge function and argument ensures that bars are uniform size and that spaces are left for "missing" data - allowing us to visually understand that there were zero Third Party or Undecided voters on the last day
+  # Create bar chart; the position_dodge function and argument ensures that bars are uniform size and that spaces are left for "missing" data - allowing us to visually understand that there were zero Third Party or Undecided poll responses on the last day
   
   geom_col(position = position_dodge(preserve = "single")) +
   
@@ -250,14 +250,15 @@ orig %>%
   
   # Ensuring the graph is informative, and has title, subtitle, and axes labels
   
-  labs(title = "North Carolina 9th - Voting Days Vote Distribution 2018", 
-       subtitle = "The largest percent of Democrat votes was cast on 10/27, while Republican votes had a more
-even distribution, except the last day", 
+  labs(title = "North Carolina 9th - Poll Days Response Distribution 2018", 
+       subtitle = "The largest percent of Democrat responses was recorded on 10/27, while Republican responses 
+had a more even distribution, except on the last day", 
        caption = "Source: New York Times Upshot / Siena College 2018 live polls", 
        x = "Date", y = "Percent") +
   
   # Position the legend at the bottom
   theme(legend.position = "bottom")
+
   
 ```
 
