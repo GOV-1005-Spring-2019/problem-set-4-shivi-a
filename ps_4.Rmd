@@ -239,7 +239,9 @@ orig %>%
   ggplot(aes(x = timestamp, y = pct, 
              fill = fct_relevel(response, "Rep", "Dem", "Und", "3"))) +
   
-  facet_wrap(~response) +
+  # Facet the data by response to show the differences between response patterns for response types
+  
+  facet_grid(rows = vars(fct_relevel(response, "Rep", "Dem", "Und", "3"))) +
   
   # Create bar chart; the position_dodge function and argument ensures that bars are uniform size and that spaces are left for "missing" data - allowing us to visually understand that there were zero Third Party or Undecided poll responses on the last day
   
@@ -258,9 +260,8 @@ had a more even distribution, except on the last day",
        caption = "Source: New York Times Upshot / Siena College 2018 live polls", 
        x = "Date", y = "Percent") +
   
-  # Position the legend at the bottom
-  theme(legend.position = "bottom") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  # Removes legend
+  theme(legend.position="none")
 
   
 ```
